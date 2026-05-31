@@ -21,9 +21,9 @@ The goal of this project was to standardize and consolidate both companies' data
 - [Data Processing Layers](#data-processing-layers)
 - [Gold Layer Data Model](#gold-layer-data-model)
 - [Dashboard and Serving Layer](#dashboard-and-serving-layer)
+- [Automation and Monitoring](#automation-and-monitoring)
 - [Business Questions Answered](#business-questions-answered)
 - [Project Impact](#project-impact)
-- [Repository Structure](#repository-structure)
 - [Data Quality Rules](#data-quality-rules)
 - [Future Improvements](#future-improvements)
 - [End Note](#end-note)
@@ -101,7 +101,7 @@ The project is designed to reflect a realistic post-acquisition data consolidati
 
 The architecture uses Amazon S3 as the raw data source and Databricks as the central processing and lakehouse platform.
 
-![Project Architecture](assets/project_architecture.png)
+![Project Architecture]("resources/project_architecture.png")
 
 ### High-Level Flow
 
@@ -174,7 +174,7 @@ fmcg
 
 The Bronze layer stores raw ingested data with minimal transformation.
 
-![Bronze Schema](assets/bronze_schema.png)
+![Bronze Schema](resources/bronze_schema.png)
 
 Bronze tables:
 
@@ -189,7 +189,7 @@ fmcg.bronze.orders
 
 The Silver layer stores cleaned and standardized data.
 
-![Silver Schema](assets/silver_schema.png)
+![Silver Schema](resources/silver_schema.png)
 
 Silver tables:
 
@@ -204,7 +204,7 @@ fmcg.silver.orders
 
 The Gold layer stores business-ready dimension and fact tables.
 
-![Gold Schema](assets/gold_schema.png)
+![Gold Schema](resources/gold_schema.png)
 
 Gold tables include both parent-company and SportsBar child-company tables:
 
@@ -229,9 +229,9 @@ Tables with the `sb_` prefix represent SportsBar child-company data. Tables with
 
 ## Pipeline Workflow
 
-The Databricks workflow contains multiple processing jobs that run in sequence.
+The Databricks workflow contains multiple processing jobs that run in sequence. The workflow is also configured with a scheduled trigger to run automatically every night at **11:00 PM**, with failure notifications enabled for monitoring.
 
-![Automated Processing Job](assets/automated_processing_data_job.png)
+![Automated Processing Job](resources/automated_processing_data_job.png)
 
 Pipeline jobs include:
 
@@ -324,7 +324,7 @@ The enriched fact view combines order, customer, product, price, and date inform
 
 The Gold layer follows a star-schema-style structure.
 
-![Gold Layer Data Model](assets/gold_data_model.png)
+![Gold Layer Data Model](resources/db_architecture.png)
 
 Core model:
 
@@ -358,10 +358,8 @@ The Serving Layer supports BI dashboards and Databricks Genie.
 
 ### Dashboard Overview Video
 
-> Add dashboard overview video here.
-
 ```markdown
-[![Dashboard Overview](assets/dashboard_thumbnail.png)](assets/dashboard_overview.mp4)
+[![Dashboard Overview]](resources/dashboard_overview.mp4)
 ```
 
 The dashboard can be used to analyze:
@@ -378,6 +376,29 @@ The dashboard can be used to analyze:
 Databricks Genie can be used on top of the final gold tables to allow business users to ask natural-language questions about sales, customers, products, and order trends.
 
 ---
+
+## Automation and Monitoring
+
+To make the pipeline more production-ready, an automated schedule trigger was configured in Databricks.
+
+The workflow is scheduled to run every night at:
+
+```text
+11:00 PM
+```
+
+This allows new incremental order files to be processed automatically without requiring manual execution.
+
+A failure notification was also configured so that if the pipeline fails, an alert is sent immediately. This helps reduce the risk of silent pipeline failures and makes the workflow easier to monitor and maintain.
+
+This automation improves the reliability of the project by supporting:
+
+- Scheduled nightly processing of future incremental order data.
+- Reduced manual intervention.
+- Faster awareness of failed pipeline runs.
+- Better operational monitoring for production-style ETL workflows.
+- More reliable downstream dashboards and Genie outputs.
+
 
 ## Business Questions Answered
 
@@ -414,47 +435,6 @@ For Atlikon, this means leadership can evaluate the acquisition using standardiz
 
 ---
 
-## Repository Structure
-
-Recommended repository structure:
-
-```text
-.
-├── README.md
-│
-├── assets/
-│   ├── project_architecture.png
-│   ├── automated_processing_data_job.png
-│   ├── bronze_schema.png
-│   ├── silver_schema.png
-│   ├── gold_schema.png
-│   ├── gold_data_model.png
-│   ├── dashboard_thumbnail.png
-│   └── dashboard_overview.mp4
-│
-├── notebooks/
-│   ├── 01_bronze_ingestion.py
-│   ├── 02_silver_cleaning.py
-│   ├── 03_gold_dimensions.py
-│   └── 04_fact_processing_orders.py
-│
-├── sql/
-│   ├── create_gold_tables.sql
-│   ├── create_dim_date.sql
-│   └── sample_analysis_queries.sql
-│
-├── data_samples/
-│   ├── customers_sample.csv
-│   ├── products_sample.csv
-│   ├── gross_price_sample.csv
-│   └── orders_sample.csv
-│
-└── docs/
-    └── databricks_project.excalidraw
-```
-
----
-
 ## Data Quality Rules
 
 The pipeline applies several data quality and standardization rules:
@@ -481,7 +461,6 @@ Possible future enhancements include:
 - Add pipeline alerting for missing customer, product, or pricing joins.
 - Add incremental merge logic using Delta Lake `MERGE`.
 - Add slowly changing dimension handling for customer and product changes.
-- Add dashboard-level revenue, margin, and category performance KPIs.
 - Add forecasting for future monthly demand.
 - Add Genie-certified business metrics for governed natural-language analytics.
 - Add CI/CD deployment for Databricks workflows and notebooks.
