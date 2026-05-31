@@ -356,9 +356,12 @@ The `fact_orders` table connects to customer, product, pricing, and date dimensi
 
 The Serving Layer supports BI dashboards and Databricks Genie.
 
-### Dashboard Overview Video
+### Dashboard Overview
 
-[![Dashboard Overview]](project-de-fmcg-atlikon/resources/dashboard_overview.mp4)
+![Dashboard Overview](project-de-fmcg-atlikon/resources/dashboard(1).png)
+![Dashboard Overview](project-de-fmcg-atlikon/resources/dashboard(2).png)
+![Dashboard Overview](project-de-fmcg-atlikon/resources/dashboard(3).png)
+![Dashboard Overview](project-de-fmcg-atlikon/resources/dashboard(4).png)
 
 The dashboard can be used to analyze:
 
