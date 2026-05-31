@@ -101,7 +101,7 @@ The project is designed to reflect a realistic post-acquisition data consolidati
 
 The architecture uses Amazon S3 as the raw data source and Databricks as the central processing and lakehouse platform.
 
-![Project Architecture]("resources/project_architecture.png")
+![Project Architecture](project-de-fmcg-atlikon/resources/project_architecture.png)
 
 ### High-Level Flow
 
@@ -174,7 +174,7 @@ fmcg
 
 The Bronze layer stores raw ingested data with minimal transformation.
 
-![Bronze Schema](resources/bronze_schema.png)
+![Bronze Schema](project-de-fmcg-atlikon/resources/bronze_schema.png)
 
 Bronze tables:
 
@@ -189,7 +189,7 @@ fmcg.bronze.orders
 
 The Silver layer stores cleaned and standardized data.
 
-![Silver Schema](resources/silver_schema.png)
+![Silver Schema](project-de-fmcg-atlikon/resources/silver_schema.png)
 
 Silver tables:
 
@@ -204,7 +204,7 @@ fmcg.silver.orders
 
 The Gold layer stores business-ready dimension and fact tables.
 
-![Gold Schema](resources/gold_schema.png)
+![Gold Schema](project-de-fmcg-atlikon/resources/gold_schema.png)
 
 Gold tables include both parent-company and SportsBar child-company tables:
 
@@ -231,7 +231,7 @@ Tables with the `sb_` prefix represent SportsBar child-company data. Tables with
 
 The Databricks workflow contains multiple processing jobs that run in sequence. The workflow is also configured with a scheduled trigger to run automatically every night at **11:00 PM**, with failure notifications enabled for monitoring.
 
-![Automated Processing Job](resources/automated_processing_data_job.png)
+![Automated Processing Job](project-de-fmcg-atlikon/resources/automated_processing_data_job.png)
 
 Pipeline jobs include:
 
@@ -324,7 +324,7 @@ The enriched fact view combines order, customer, product, price, and date inform
 
 The Gold layer follows a star-schema-style structure.
 
-![Gold Layer Data Model](resources/db_architecture.png)
+![Gold Layer Data Model](project-de-fmcg-atlikon/resources/db_architecture.png)
 
 Core model:
 
@@ -358,9 +358,7 @@ The Serving Layer supports BI dashboards and Databricks Genie.
 
 ### Dashboard Overview Video
 
-```markdown
-[![Dashboard Overview]](resources/dashboard_overview.mp4)
-```
+[![Dashboard Overview]](project-de-fmcg-atlikon/resources/dashboard_overview.mp4)
 
 The dashboard can be used to analyze:
 
